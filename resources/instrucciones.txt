@@ -1,0 +1,13 @@
+Bienvenido/a a la tarea Stroop.
+
+Durante esta tarea, verás palabras o cadenas de letras presentadas en distintos colores.
+Tu tarea es indicar el color de la tinta, ignorando el significado de la palabra.
+
+Usa las flechas del teclado para responder:
+- Flecha UP para ROJO
+- Flecha DOWN para AZUL
+- Flecha LEFT para VERDE
+- Flecha RIGHT para AMARILLO
+
+Intenta responder lo más rápido y correctamente posible.
+Presiona una tecla para comenzar.

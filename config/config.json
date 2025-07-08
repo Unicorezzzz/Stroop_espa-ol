@@ -1,0 +1,27 @@
+{
+    "rt_max": 2500,
+    "rt_min": 200,
+    "isi": 3000,
+    "iti_base": 500,
+    "duracion_max_ensayo": 2500,
+    "num_ensayos_practica": 5,
+    "num_ensayos_C": 36,
+    "num_ensayos_PC": 36,
+    "mostrar_leyenda": true,
+    "feedback_practica": true,
+    "feedback_experimental": false,
+    "restringir_color_repetido": true,
+    "estimulo_control": "XXXX",
+    "colores": [
+        "rojo",
+        "azul",
+        "verde",
+        "amarillo"
+    ],
+    "palabras_color": [
+        "ROJO",
+        "AZUL",
+        "VERDE",
+        "AMARILLO"
+    ]
+}

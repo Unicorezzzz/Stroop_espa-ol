@@ -1,0 +1,14 @@
+# Archivos generados por PsychoPy
+*_lastrun.py
+html/
+data/
+__pycache__/
+*.psyexp-auto-backup
+
+# Archivos temporales de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno o dependencias
+env/
+venv/
