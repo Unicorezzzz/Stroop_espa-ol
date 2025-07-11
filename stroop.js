@@ -61,6 +61,16 @@ flowScheduler.add(practica_cLoopScheduler);
 flowScheduler.add(practica_cLoopEnd);
 
 
+flowScheduler.add(instrucciones_especificasRoutineBegin());
+flowScheduler.add(instrucciones_especificasRoutineEachFrame());
+flowScheduler.add(instrucciones_especificasRoutineEnd());
+flowScheduler.add(ITI_inicialRoutineBegin());
+flowScheduler.add(ITI_inicialRoutineEachFrame());
+flowScheduler.add(ITI_inicialRoutineEnd());
+const condicion_CLoopScheduler = new Scheduler(psychoJS);
+flowScheduler.add(condicion_CLoopBegin(condicion_CLoopScheduler));
+flowScheduler.add(condicion_CLoopScheduler);
+flowScheduler.add(condicion_CLoopEnd);
 
 
 flowScheduler.add(instrucciones_especificasRoutineBegin());
@@ -69,15 +79,24 @@ flowScheduler.add(instrucciones_especificasRoutineEnd());
 flowScheduler.add(ITI_inicialRoutineBegin());
 flowScheduler.add(ITI_inicialRoutineEachFrame());
 flowScheduler.add(ITI_inicialRoutineEnd());
-const trialsLoopScheduler = new Scheduler(psychoJS);
-flowScheduler.add(trialsLoopBegin(trialsLoopScheduler));
-flowScheduler.add(trialsLoopScheduler);
-flowScheduler.add(trialsLoopEnd);
+const practica_PCLoopScheduler = new Scheduler(psychoJS);
+flowScheduler.add(practica_PCLoopBegin(practica_PCLoopScheduler));
+flowScheduler.add(practica_PCLoopScheduler);
+flowScheduler.add(practica_PCLoopEnd);
 
 
 flowScheduler.add(instrucciones_especificasRoutineBegin());
 flowScheduler.add(instrucciones_especificasRoutineEachFrame());
 flowScheduler.add(instrucciones_especificasRoutineEnd());
+flowScheduler.add(ITI_inicialRoutineBegin());
+flowScheduler.add(ITI_inicialRoutineEachFrame());
+flowScheduler.add(ITI_inicialRoutineEnd());
+const loop_condicion_PCLoopScheduler = new Scheduler(psychoJS);
+flowScheduler.add(loop_condicion_PCLoopBegin(loop_condicion_PCLoopScheduler));
+flowScheduler.add(loop_condicion_PCLoopScheduler);
+flowScheduler.add(loop_condicion_PCLoopEnd);
+
+
 flowScheduler.add(quitPsychoJS, 'Thank you for your patience.', true);
 
 // quit if user presses Cancel in dialog box:
@@ -89,7 +108,7 @@ psychoJS.start({
   resources: [
     // resources:
     {'name': 'conditions/practica_C.csv', 'path': 'conditions/practica_C.csv'},
-    {'name': 'conditions/practica_C.csv', 'path': 'conditions/practica_C.csv'},
+    {'name': 'conditions/practica_PC.csv', 'path': 'conditions/practica_PC.csv'},
   ]
 });
 
@@ -134,18 +153,22 @@ var texto_instrucciones_c;
 var key_next_c;
 var ITI_inicialClock;
 var cruz;
+var archivo_csv;
 var ensayo_practica_cClock;
 var texto_estimulo_ensayo_C;
 var respuesta_teclado_ensayo_C;
 var CRUZ_ensayo_C;
-var frameClock;
-var text;
-var feedback_practicaClock;
-var feedback_text;
+var feedback_text_C;
 var condicion_cClock;
 var texto_estimulo_C;
 var respuesta_teclado_C;
 var CRUZ_C;
+var ensayo_practica_PCClock;
+var texto_estimulo_ensayo_PC;
+var respuesta_teclado_ensayo_PC;
+var CRUZ_ensayo_PC;
+var feedback_text_PC;
+var condicion_PCClock;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -199,6 +222,9 @@ async function experimentInit() {
     interpolate: true, 
   });
   
+  // Run 'Begin Experiment' code from setup
+  archivo_csv = (("conditions/orden_p" + expInfo["participant"]) + ".csv");
+  
   // Initialize components for Routine "ensayo_practica_c"
   ensayo_practica_cClock = new util.Clock();
   texto_estimulo_ensayo_C = new visual.TextStim({
@@ -231,32 +257,16 @@ async function experimentInit() {
     interpolate: true, 
   });
   
-  // Initialize components for Routine "frame"
-  frameClock = new util.Clock();
-  text = new visual.TextStim({
+  feedback_text_C = new visual.TextStim({
     win: psychoJS.window,
-    name: 'text',
-    text: '',
-    font: 'Arial',
-    units: undefined, 
-    pos: [0, 0], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
-    languageStyle: 'LTR',
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  // Initialize components for Routine "feedback_practica"
-  feedback_practicaClock = new util.Clock();
-  feedback_text = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'feedback_text',
+    name: 'feedback_text_C',
     text: '',
     font: 'Arial',
     units: undefined, 
     pos: [0, 0], draggable: false, height: 0.1,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
-    color: new util.Color(undefined),  opacity: undefined,
-    depth: 0.0 
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -4.0 
   });
   
   // Initialize components for Routine "condicion_c"
@@ -291,6 +301,52 @@ async function experimentInit() {
     interpolate: true, 
   });
   
+  // Initialize components for Routine "ensayo_practica_PC"
+  ensayo_practica_PCClock = new util.Clock();
+  texto_estimulo_ensayo_PC = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'texto_estimulo_ensayo_PC',
+    text: '',
+    font: 'Arial',
+    units: 'height', 
+    pos: [0, 0], draggable: false, height: 0.09,  wrapWidth: undefined, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color('white'),  opacity: 1.0,
+    depth: 0.0 
+  });
+  
+  respuesta_teclado_ensayo_PC = new core.Keyboard({psychoJS: psychoJS, clock: new util.Clock(), waitForStart: true});
+  
+  CRUZ_ensayo_PC = new visual.ShapeStim ({
+    win: psychoJS.window, name: 'CRUZ_ensayo_PC', 
+    vertices: 'cross', size:[0.1, 0.1],
+    ori: 0.0, 
+    pos: [0, 0], 
+    draggable: false, 
+    anchor: 'center', 
+    lineWidth: 1.0, 
+    lineColor: new util.Color('white'), 
+    fillColor: new util.Color('white'), 
+    colorSpace: 'rgb', 
+    opacity: undefined, 
+    depth: -2, 
+    interpolate: true, 
+  });
+  
+  feedback_text_PC = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'feedback_text_PC',
+    text: '',
+    font: 'Arial',
+    units: undefined, 
+    pos: [0, 0], draggable: false, height: 0.1,  wrapWidth: undefined, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -4.0 
+  });
+  
+  // Initialize components for Routine "condicion_PC"
+  condicion_PCClock = new util.Clock();
   // Create some handy timers
   globalClock = new util.Clock();  // to track the time since experiment started
   routineTimer = new util.CountdownTimer();  // to track time remaining of each (non-slip) routine
@@ -701,12 +757,6 @@ function practica_cLoopBegin(practica_cLoopScheduler, snapshot) {
       practica_cLoopScheduler.add(ensayo_practica_cRoutineBegin(snapshot));
       practica_cLoopScheduler.add(ensayo_practica_cRoutineEachFrame());
       practica_cLoopScheduler.add(ensayo_practica_cRoutineEnd(snapshot));
-      practica_cLoopScheduler.add(frameRoutineBegin(snapshot));
-      practica_cLoopScheduler.add(frameRoutineEachFrame());
-      practica_cLoopScheduler.add(frameRoutineEnd(snapshot));
-      practica_cLoopScheduler.add(feedback_practicaRoutineBegin(snapshot));
-      practica_cLoopScheduler.add(feedback_practicaRoutineEachFrame());
-      practica_cLoopScheduler.add(feedback_practicaRoutineEnd(snapshot));
       practica_cLoopScheduler.add(practica_cLoopEndIteration(practica_cLoopScheduler, snapshot));
     }
     
@@ -747,30 +797,30 @@ function practica_cLoopEndIteration(scheduler, snapshot) {
 }
 
 
-var trials;
-function trialsLoopBegin(trialsLoopScheduler, snapshot) {
+var condicion_C;
+function condicion_CLoopBegin(condicion_CLoopScheduler, snapshot) {
   return async function() {
     TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
     
     // set up handler to look after randomisation of conditions etc
-    trials = new TrialHandler({
+    condicion_C = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 9, method: TrialHandler.Method.RANDOM,
+      nReps: 1, method: TrialHandler.Method.RANDOM,
       extraInfo: expInfo, originPath: undefined,
-      trialList: 'conditions/practica_C.csv',
-      seed: undefined, name: 'trials'
+      trialList: archivo_csv,
+      seed: undefined, name: 'condicion_C'
     });
-    psychoJS.experiment.addLoop(trials); // add the loop to the experiment
-    currentLoop = trials;  // we're now the current loop
+    psychoJS.experiment.addLoop(condicion_C); // add the loop to the experiment
+    currentLoop = condicion_C;  // we're now the current loop
     
     // Schedule all the trials in the trialList:
-    for (const thisTrial of trials) {
-      snapshot = trials.getSnapshot();
-      trialsLoopScheduler.add(importConditions(snapshot));
-      trialsLoopScheduler.add(condicion_cRoutineBegin(snapshot));
-      trialsLoopScheduler.add(condicion_cRoutineEachFrame());
-      trialsLoopScheduler.add(condicion_cRoutineEnd(snapshot));
-      trialsLoopScheduler.add(trialsLoopEndIteration(trialsLoopScheduler, snapshot));
+    for (const thisCondicion_C of condicion_C) {
+      snapshot = condicion_C.getSnapshot();
+      condicion_CLoopScheduler.add(importConditions(snapshot));
+      condicion_CLoopScheduler.add(condicion_cRoutineBegin(snapshot));
+      condicion_CLoopScheduler.add(condicion_cRoutineEachFrame());
+      condicion_CLoopScheduler.add(condicion_cRoutineEnd(snapshot));
+      condicion_CLoopScheduler.add(condicion_CLoopEndIteration(condicion_CLoopScheduler, snapshot));
     }
     
     return Scheduler.Event.NEXT;
@@ -778,9 +828,9 @@ function trialsLoopBegin(trialsLoopScheduler, snapshot) {
 }
 
 
-async function trialsLoopEnd() {
+async function condicion_CLoopEnd() {
   // terminate loop
-  psychoJS.experiment.removeLoop(trials);
+  psychoJS.experiment.removeLoop(condicion_C);
   // update the current loop from the ExperimentHandler
   if (psychoJS.experiment._unfinishedLoops.length>0)
     currentLoop = psychoJS.experiment._unfinishedLoops.at(-1);
@@ -790,7 +840,133 @@ async function trialsLoopEnd() {
 }
 
 
-function trialsLoopEndIteration(scheduler, snapshot) {
+function condicion_CLoopEndIteration(scheduler, snapshot) {
+  // ------Prepare for next entry------
+  return async function () {
+    if (typeof snapshot !== 'undefined') {
+      // ------Check if user ended loop early------
+      if (snapshot.finished) {
+        // Check for and save orphaned data
+        if (psychoJS.experiment.isEntryEmpty()) {
+          psychoJS.experiment.nextEntry(snapshot);
+        }
+        scheduler.stop();
+      } else {
+        psychoJS.experiment.nextEntry(snapshot);
+      }
+    return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+var practica_PC;
+function practica_PCLoopBegin(practica_PCLoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    practica_PC = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.RANDOM,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: 'conditions/practica_PC.csv',
+      seed: undefined, name: 'practica_PC'
+    });
+    psychoJS.experiment.addLoop(practica_PC); // add the loop to the experiment
+    currentLoop = practica_PC;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisPractica_PC of practica_PC) {
+      snapshot = practica_PC.getSnapshot();
+      practica_PCLoopScheduler.add(importConditions(snapshot));
+      practica_PCLoopScheduler.add(ensayo_practica_PCRoutineBegin(snapshot));
+      practica_PCLoopScheduler.add(ensayo_practica_PCRoutineEachFrame());
+      practica_PCLoopScheduler.add(ensayo_practica_PCRoutineEnd(snapshot));
+      practica_PCLoopScheduler.add(practica_PCLoopEndIteration(practica_PCLoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+async function practica_PCLoopEnd() {
+  // terminate loop
+  psychoJS.experiment.removeLoop(practica_PC);
+  // update the current loop from the ExperimentHandler
+  if (psychoJS.experiment._unfinishedLoops.length>0)
+    currentLoop = psychoJS.experiment._unfinishedLoops.at(-1);
+  else
+    currentLoop = psychoJS.experiment;  // so we use addData from the experiment
+  return Scheduler.Event.NEXT;
+}
+
+
+function practica_PCLoopEndIteration(scheduler, snapshot) {
+  // ------Prepare for next entry------
+  return async function () {
+    if (typeof snapshot !== 'undefined') {
+      // ------Check if user ended loop early------
+      if (snapshot.finished) {
+        // Check for and save orphaned data
+        if (psychoJS.experiment.isEntryEmpty()) {
+          psychoJS.experiment.nextEntry(snapshot);
+        }
+        scheduler.stop();
+      } else {
+        psychoJS.experiment.nextEntry(snapshot);
+      }
+    return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+var loop_condicion_PC;
+function loop_condicion_PCLoopBegin(loop_condicion_PCLoopScheduler, snapshot) {
+  return async function() {
+    TrialHandler.fromSnapshot(snapshot); // update internal variables (.thisN etc) of the loop
+    
+    // set up handler to look after randomisation of conditions etc
+    loop_condicion_PC = new TrialHandler({
+      psychoJS: psychoJS,
+      nReps: 1, method: TrialHandler.Method.RANDOM,
+      extraInfo: expInfo, originPath: undefined,
+      trialList: undefined,
+      seed: undefined, name: 'loop_condicion_PC'
+    });
+    psychoJS.experiment.addLoop(loop_condicion_PC); // add the loop to the experiment
+    currentLoop = loop_condicion_PC;  // we're now the current loop
+    
+    // Schedule all the trials in the trialList:
+    for (const thisLoop_condicion_PC of loop_condicion_PC) {
+      snapshot = loop_condicion_PC.getSnapshot();
+      loop_condicion_PCLoopScheduler.add(importConditions(snapshot));
+      loop_condicion_PCLoopScheduler.add(condicion_PCRoutineBegin(snapshot));
+      loop_condicion_PCLoopScheduler.add(condicion_PCRoutineEachFrame());
+      loop_condicion_PCLoopScheduler.add(condicion_PCRoutineEnd(snapshot));
+      loop_condicion_PCLoopScheduler.add(loop_condicion_PCLoopEndIteration(loop_condicion_PCLoopScheduler, snapshot));
+    }
+    
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+async function loop_condicion_PCLoopEnd() {
+  // terminate loop
+  psychoJS.experiment.removeLoop(loop_condicion_PC);
+  // update the current loop from the ExperimentHandler
+  if (psychoJS.experiment._unfinishedLoops.length>0)
+    currentLoop = psychoJS.experiment._unfinishedLoops.at(-1);
+  else
+    currentLoop = psychoJS.experiment;  // so we use addData from the experiment
+  return Scheduler.Event.NEXT;
+}
+
+
+function loop_condicion_PCLoopEndIteration(scheduler, snapshot) {
   // ------Prepare for next entry------
   return async function () {
     if (typeof snapshot !== 'undefined') {
@@ -839,7 +1015,7 @@ function ensayo_practica_cRoutineBegin(snapshot) {
     tiempo_respuesta = null;
     inicio_ensayo = globalClock.getTime();
     texto_estimulo_ensayo_C.setAutoDraw(true);
-    CRUZ_ensayo_C.setAutoDraw(false);
+    feedback_text_C.setAutoDraw(false);
     
     psychoJS.experiment.addData('ensayo_practica_c.started', globalClock.getTime());
     ensayo_practica_cMaxDuration = null
@@ -848,6 +1024,7 @@ function ensayo_practica_cRoutineBegin(snapshot) {
     ensayo_practica_cComponents.push(texto_estimulo_ensayo_C);
     ensayo_practica_cComponents.push(respuesta_teclado_ensayo_C);
     ensayo_practica_cComponents.push(CRUZ_ensayo_C);
+    ensayo_practica_cComponents.push(feedback_text_C);
     
     for (const thisComponent of ensayo_practica_cComponents)
       if ('status' in thisComponent)
@@ -916,12 +1093,17 @@ function ensayo_practica_cRoutineEachFrame() {
     
     
     // *CRUZ_ensayo_C* updates
-    if ((false) && CRUZ_ensayo_C.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 3 && CRUZ_ensayo_C.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       CRUZ_ensayo_C.tStart = t;  // (not accounting for frame time here)
       CRUZ_ensayo_C.frameNStart = frameN;  // exact frame index
       
       CRUZ_ensayo_C.setAutoDraw(true);
+    }
+    
+    frameRemains = 3 + 0.5 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    if (CRUZ_ensayo_C.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      CRUZ_ensayo_C.setAutoDraw(false);
     }
     
     // Run 'Each Frame' code from Code_ensayo_C
@@ -930,19 +1112,43 @@ function ensayo_practica_cRoutineEachFrame() {
         respuesta_registrada = true;
         tiempo_respuesta = tiempo_actual;
         texto_estimulo_ensayo_C.setAutoDraw(false);
-        CRUZ_ensayo_C.setAutoDraw(true);
+        feedback_text_C.setAutoDraw(true);
+        if ((respuesta_teclado_ensayo_C.corr === 1)) {
+            feedback_text_C.text = "\u2714";
+            feedback_text_C.color = "green";
+        } else {
+            feedback_text_C.text = "\u2716";
+            feedback_text_C.color = "red";
+        }
         respuesta_teclado_ensayo_C.status = PsychoJS.Status.FINISHED;
     } else {
         if (((tiempo_actual >= 2.5) && (! respuesta_registrada))) {
             respuesta_registrada = true;
             texto_estimulo_ensayo_C.setAutoDraw(false);
-            CRUZ_ensayo_C.setAutoDraw(true);
-            respuesta_teclado_ensayo_C.status = PsychoJS.Status.FINISHED;
+            feedback_text_C.setAutoDraw(true);
+            if ((respuesta_teclado_ensayo_C.corr === 1)) {
+                feedback_text_C.text = "\u2714";
+                feedback_text_C.color = "green";
+            } else {
+                feedback_text_C.text = "\u2716";
+                feedback_text_C.color = "red";
+            }
+            respuesta_teclado_C.status = PsychoJS.Status.FINISHED;
         } else {
             if ((tiempo_actual >= 3.0)) {
                 continueRoutine = false;
             }
         }
+    }
+    
+    
+    // *feedback_text_C* updates
+    if ((false) && feedback_text_C.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      feedback_text_C.tStart = t;  // (not accounting for frame time here)
+      feedback_text_C.frameNStart = frameN;  // exact frame index
+      
+      feedback_text_C.setAutoDraw(true);
     }
     
     // check for quit (typically the Esc key)
@@ -1015,233 +1221,13 @@ function ensayo_practica_cRoutineEnd(snapshot) {
         validez = "omitida";
     }
     psychoJS.experiment.addData("validez", validez);
-    CRUZ_ensayo_C.setAutoDraw(false);
+    feedback_text_C.setAutoDraw(false);
     psychoJS.experiment.addData("RT", (tiempo_respuesta ? tiempo_respuesta : "NA"));
     psychoJS.experiment.addData("key", respuesta_teclado_ensayo_C.keys);
-    try {
-        feedback_corr = Number.parseInt(respuesta_teclado_ensayoC.corr);
-    } catch(e) {
-        feedback_corr = 0;
-    }
     
     // the Routine "ensayo_practica_c" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
-    // Routines running outside a loop should always advance the datafile row
-    if (currentLoop === psychoJS.experiment) {
-      psychoJS.experiment.nextEntry(snapshot);
-    }
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-var frameMaxDurationReached;
-var frameMaxDuration;
-var frameComponents;
-function frameRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //--- Prepare to start Routine 'frame' ---
-    t = 0;
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    frameClock.reset(routineTimer.getTime());
-    routineTimer.add(0.000100);
-    frameMaxDurationReached = false;
-    // update component parameters for each repeat
-    psychoJS.experiment.addData('frame.started', globalClock.getTime());
-    frameMaxDuration = null
-    // keep track of which components have finished
-    frameComponents = [];
-    frameComponents.push(text);
-    
-    for (const thisComponent of frameComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function frameRoutineEachFrame() {
-  return async function () {
-    //--- Loop for each frame of Routine 'frame' ---
-    // get current time
-    t = frameClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *text* updates
-    if (t >= 0.0 && text.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      text.tStart = t;  // (not accounting for frame time here)
-      text.frameNStart = frameN;  // exact frame index
-      
-      text.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.0 + 0.0001 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      text.setAutoDraw(false);
-    }
-    
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of frameComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function frameRoutineEnd(snapshot) {
-  return async function () {
-    //--- Ending Routine 'frame' ---
-    for (const thisComponent of frameComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    psychoJS.experiment.addData('frame.stopped', globalClock.getTime());
-    if (frameMaxDurationReached) {
-        frameClock.add(frameMaxDuration);
-    } else {
-        frameClock.add(0.000100);
-    }
-    // Routines running outside a loop should always advance the datafile row
-    if (currentLoop === psychoJS.experiment) {
-      psychoJS.experiment.nextEntry(snapshot);
-    }
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-var feedback_practicaMaxDurationReached;
-var feedback_practicaMaxDuration;
-var feedback_practicaComponents;
-function feedback_practicaRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //--- Prepare to start Routine 'feedback_practica' ---
-    t = 0;
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    feedback_practicaClock.reset(routineTimer.getTime());
-    routineTimer.add(1.000000);
-    feedback_practicaMaxDurationReached = false;
-    // update component parameters for each repeat
-    feedback_text.setText('\n');
-    // Run 'Begin Routine' code from codigo_feedback
-    if ((feedback_corr === 1)) {
-        feedback_text.text = "\u2714";
-        feedback_text.color = "green";
-    } else {
-        feedback_text.text = "\u2716";
-        feedback_text.color = "red";
-    }
-    
-    psychoJS.experiment.addData('feedback_practica.started', globalClock.getTime());
-    feedback_practicaMaxDuration = null
-    // keep track of which components have finished
-    feedback_practicaComponents = [];
-    feedback_practicaComponents.push(feedback_text);
-    
-    for (const thisComponent of feedback_practicaComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function feedback_practicaRoutineEachFrame() {
-  return async function () {
-    //--- Loop for each frame of Routine 'feedback_practica' ---
-    // get current time
-    t = feedback_practicaClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *feedback_text* updates
-    if (t >= 0.0 && feedback_text.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      feedback_text.tStart = t;  // (not accounting for frame time here)
-      feedback_text.frameNStart = frameN;  // exact frame index
-      
-      feedback_text.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.0 + 1.0 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (feedback_text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      feedback_text.setAutoDraw(false);
-    }
-    
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of feedback_practicaComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function feedback_practicaRoutineEnd(snapshot) {
-  return async function () {
-    //--- Ending Routine 'feedback_practica' ---
-    for (const thisComponent of feedback_practicaComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    psychoJS.experiment.addData('feedback_practica.stopped', globalClock.getTime());
-    // Run 'End Routine' code from codigo_feedback
-    feedback_text.setAutoDraw(false);
-    
-    if (feedback_practicaMaxDurationReached) {
-        feedback_practicaClock.add(feedback_practicaMaxDuration);
-    } else {
-        feedback_practicaClock.add(1.000000);
-    }
     // Routines running outside a loop should always advance the datafile row
     if (currentLoop === psychoJS.experiment) {
       psychoJS.experiment.nextEntry(snapshot);
@@ -1456,6 +1442,335 @@ function condicion_cRoutineEnd(snapshot) {
     psychoJS.experiment.addData("key", respuesta_teclado_C.keys);
     
     // the Routine "condicion_c" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
+    // Routines running outside a loop should always advance the datafile row
+    if (currentLoop === psychoJS.experiment) {
+      psychoJS.experiment.nextEntry(snapshot);
+    }
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+var ensayo_practica_PCMaxDurationReached;
+var _respuesta_teclado_ensayo_PC_allKeys;
+var ensayo_practica_PCMaxDuration;
+var ensayo_practica_PCComponents;
+function ensayo_practica_PCRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //--- Prepare to start Routine 'ensayo_practica_PC' ---
+    t = 0;
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    ensayo_practica_PCClock.reset();
+    routineTimer.reset();
+    ensayo_practica_PCMaxDurationReached = false;
+    // update component parameters for each repeat
+    texto_estimulo_ensayo_PC.setColor(new util.Color(color_tinta));
+    texto_estimulo_ensayo_PC.setText(palabra);
+    respuesta_teclado_ensayo_PC.keys = undefined;
+    respuesta_teclado_ensayo_PC.rt = undefined;
+    _respuesta_teclado_ensayo_PC_allKeys = [];
+    // Run 'Begin Routine' code from Code_ensayo_PC
+    respuesta_registrada = false;
+    tiempo_respuesta = null;
+    inicio_ensayo = globalClock.getTime();
+    texto_estimulo_ensayo_PC.setAutoDraw(true);
+    feedback_text_PC.setAutoDraw(false);
+    
+    psychoJS.experiment.addData('ensayo_practica_PC.started', globalClock.getTime());
+    ensayo_practica_PCMaxDuration = null
+    // keep track of which components have finished
+    ensayo_practica_PCComponents = [];
+    ensayo_practica_PCComponents.push(texto_estimulo_ensayo_PC);
+    ensayo_practica_PCComponents.push(respuesta_teclado_ensayo_PC);
+    ensayo_practica_PCComponents.push(CRUZ_ensayo_PC);
+    ensayo_practica_PCComponents.push(feedback_text_PC);
+    
+    for (const thisComponent of ensayo_practica_PCComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function ensayo_practica_PCRoutineEachFrame() {
+  return async function () {
+    //--- Loop for each frame of Routine 'ensayo_practica_PC' ---
+    // get current time
+    t = ensayo_practica_PCClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    
+    // *texto_estimulo_ensayo_PC* updates
+    if (t >= 0.0 && texto_estimulo_ensayo_PC.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      texto_estimulo_ensayo_PC.tStart = t;  // (not accounting for frame time here)
+      texto_estimulo_ensayo_PC.frameNStart = frameN;  // exact frame index
+      
+      texto_estimulo_ensayo_PC.setAutoDraw(true);
+    }
+    
+    frameRemains = 0.0 + 2.5 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    if (texto_estimulo_ensayo_PC.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      texto_estimulo_ensayo_PC.setAutoDraw(false);
+    }
+    
+    
+    // *respuesta_teclado_ensayo_PC* updates
+    if (t >= 0.0 && respuesta_teclado_ensayo_PC.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      respuesta_teclado_ensayo_PC.tStart = t;  // (not accounting for frame time here)
+      respuesta_teclado_ensayo_PC.frameNStart = frameN;  // exact frame index
+      
+      // keyboard checking is just starting
+      psychoJS.window.callOnFlip(function() { respuesta_teclado_ensayo_PC.clock.reset(); });  // t=0 on next screen flip
+      psychoJS.window.callOnFlip(function() { respuesta_teclado_ensayo_PC.start(); }); // start on screen flip
+      psychoJS.window.callOnFlip(function() { respuesta_teclado_ensayo_PC.clearEvents(); });
+    }
+    
+    frameRemains = 0.0 + 2.5 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    if (respuesta_teclado_ensayo_PC.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      respuesta_teclado_ensayo_PC.status = PsychoJS.Status.FINISHED;
+        }
+      
+    if (respuesta_teclado_ensayo_PC.status === PsychoJS.Status.STARTED) {
+      let theseKeys = respuesta_teclado_ensayo_PC.getKeys({keyList: ['up', 'down', 'left', 'right'], waitRelease: false});
+      _respuesta_teclado_ensayo_PC_allKeys = _respuesta_teclado_ensayo_PC_allKeys.concat(theseKeys);
+      if (_respuesta_teclado_ensayo_PC_allKeys.length > 0) {
+        respuesta_teclado_ensayo_PC.keys = _respuesta_teclado_ensayo_PC_allKeys[_respuesta_teclado_ensayo_PC_allKeys.length - 1].name;  // just the last key pressed
+        respuesta_teclado_ensayo_PC.rt = _respuesta_teclado_ensayo_PC_allKeys[_respuesta_teclado_ensayo_PC_allKeys.length - 1].rt;
+        respuesta_teclado_ensayo_PC.duration = _respuesta_teclado_ensayo_PC_allKeys[_respuesta_teclado_ensayo_PC_allKeys.length - 1].duration;
+        // was this correct?
+        if (respuesta_teclado_ensayo_PC.keys == tecla_correcta) {
+            respuesta_teclado_ensayo_PC.corr = 1;
+        } else {
+            respuesta_teclado_ensayo_PC.corr = 0;
+        }
+      }
+    }
+    
+    
+    // *CRUZ_ensayo_PC* updates
+    if (t >= 3 && CRUZ_ensayo_PC.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      CRUZ_ensayo_PC.tStart = t;  // (not accounting for frame time here)
+      CRUZ_ensayo_PC.frameNStart = frameN;  // exact frame index
+      
+      CRUZ_ensayo_PC.setAutoDraw(true);
+    }
+    
+    frameRemains = 3 + 0.5 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    if (CRUZ_ensayo_PC.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      CRUZ_ensayo_PC.setAutoDraw(false);
+    }
+    
+    // Run 'Each Frame' code from Code_ensayo_PC
+    tiempo_actual = (globalClock.getTime() - inicio_ensayo);
+    if ((respuesta_teclado_ensayo_PC.keys && (! respuesta_registrada))) {
+        respuesta_registrada = true;
+        tiempo_respuesta = tiempo_actual;
+        texto_estimulo_ensayo_PC.setAutoDraw(false);
+        feedback_text_PC.setAutoDraw(true);
+        if ((respuesta_teclado_ensayo_PC.corr === 1)) {
+            feedback_text_PC.text = "\u2714";
+            feedback_text_PC.color = "green";
+        } else {
+            feedback_text_PC.text = "\u2716";
+            feedback_text_PC.color = "red";
+        }
+        respuesta_teclado_ensayo_PC.status = PsychoJS.Status.FINISHED;
+    } else {
+        if (((tiempo_actual >= 2.5) && (! respuesta_registrada))) {
+            respuesta_registrada = true;
+            texto_estimulo_ensayo_PC.setAutoDraw(false);
+            feedback_text_PC.setAutoDraw(true);
+            if ((respuesta_teclado_ensayo_PC.corr === 1)) {
+                feedback_text_PC.text = "\u2714";
+                feedback_text_PC.color = "green";
+            } else {
+                feedback_text_PC.text = "\u2716";
+                feedback_text_PC.color = "red";
+            }
+            respuesta_teclado_ensayo_PC.status = PsychoJS.Status.FINISHED;
+        } else {
+            if ((tiempo_actual >= 3.0)) {
+                continueRoutine = false;
+            }
+        }
+    }
+    
+    
+    // *feedback_text_PC* updates
+    if ((false) && feedback_text_PC.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      feedback_text_PC.tStart = t;  // (not accounting for frame time here)
+      feedback_text_PC.frameNStart = frameN;  // exact frame index
+      
+      feedback_text_PC.setAutoDraw(true);
+    }
+    
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of ensayo_practica_PCComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function ensayo_practica_PCRoutineEnd(snapshot) {
+  return async function () {
+    //--- Ending Routine 'ensayo_practica_PC' ---
+    for (const thisComponent of ensayo_practica_PCComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('ensayo_practica_PC.stopped', globalClock.getTime());
+    // was no response the correct answer?!
+    if (respuesta_teclado_ensayo_PC.keys === undefined) {
+      if (['None','none',undefined].includes(tecla_correcta)) {
+         respuesta_teclado_ensayo_PC.corr = 1;  // correct non-response
+      } else {
+         respuesta_teclado_ensayo_PC.corr = 0;  // failed to respond (incorrectly)
+      }
+    }
+    // store data for current loop
+    // update the trial handler
+    if (currentLoop instanceof MultiStairHandler) {
+      currentLoop.addResponse(respuesta_teclado_ensayo_PC.corr, level);
+    }
+    psychoJS.experiment.addData('respuesta_teclado_ensayo_PC.keys', respuesta_teclado_ensayo_PC.keys);
+    psychoJS.experiment.addData('respuesta_teclado_ensayo_PC.corr', respuesta_teclado_ensayo_PC.corr);
+    if (typeof respuesta_teclado_ensayo_PC.keys !== 'undefined') {  // we had a response
+        psychoJS.experiment.addData('respuesta_teclado_ensayo_PC.rt', respuesta_teclado_ensayo_PC.rt);
+        psychoJS.experiment.addData('respuesta_teclado_ensayo_PC.duration', respuesta_teclado_ensayo_PC.duration);
+        }
+    
+    respuesta_teclado_ensayo_PC.stop();
+    // Run 'End Routine' code from Code_ensayo_PC
+    if (tiempo_respuesta) {
+        if ((tiempo_respuesta < 0.2)) {
+            validez = "anticipada";
+            respuesta_teclado_ensayo_PC.corr = 0;
+        } else {
+            validez = "valida";
+        }
+    } else {
+        validez = "omitida";
+    }
+    psychoJS.experiment.addData("validez", validez);
+    feedback_text_PC.setAutoDraw(false);
+    psychoJS.experiment.addData("RT", (tiempo_respuesta ? tiempo_respuesta : "NA"));
+    psychoJS.experiment.addData("key", respuesta_teclado_ensayo_PC.keys);
+    
+    // the Routine "ensayo_practica_PC" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
+    // Routines running outside a loop should always advance the datafile row
+    if (currentLoop === psychoJS.experiment) {
+      psychoJS.experiment.nextEntry(snapshot);
+    }
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+var condicion_PCMaxDurationReached;
+var condicion_PCMaxDuration;
+var condicion_PCComponents;
+function condicion_PCRoutineBegin(snapshot) {
+  return async function () {
+    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
+    
+    //--- Prepare to start Routine 'condicion_PC' ---
+    t = 0;
+    frameN = -1;
+    continueRoutine = true; // until we're told otherwise
+    condicion_PCClock.reset();
+    routineTimer.reset();
+    condicion_PCMaxDurationReached = false;
+    // update component parameters for each repeat
+    psychoJS.experiment.addData('condicion_PC.started', globalClock.getTime());
+    condicion_PCMaxDuration = null
+    // keep track of which components have finished
+    condicion_PCComponents = [];
+    
+    for (const thisComponent of condicion_PCComponents)
+      if ('status' in thisComponent)
+        thisComponent.status = PsychoJS.Status.NOT_STARTED;
+    return Scheduler.Event.NEXT;
+  }
+}
+
+
+function condicion_PCRoutineEachFrame() {
+  return async function () {
+    //--- Loop for each frame of Routine 'condicion_PC' ---
+    // get current time
+    t = condicion_PCClock.getTime();
+    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
+    // update/draw components on each frame
+    // check for quit (typically the Esc key)
+    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
+      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
+    }
+    
+    // check if the Routine should terminate
+    if (!continueRoutine) {  // a component has requested a forced-end of Routine
+      return Scheduler.Event.NEXT;
+    }
+    
+    continueRoutine = false;  // reverts to True if at least one component still running
+    for (const thisComponent of condicion_PCComponents)
+      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
+        continueRoutine = true;
+        break;
+      }
+    
+    // refresh the screen if continuing
+    if (continueRoutine) {
+      return Scheduler.Event.FLIP_REPEAT;
+    } else {
+      return Scheduler.Event.NEXT;
+    }
+  };
+}
+
+
+function condicion_PCRoutineEnd(snapshot) {
+  return async function () {
+    //--- Ending Routine 'condicion_PC' ---
+    for (const thisComponent of condicion_PCComponents) {
+      if (typeof thisComponent.setAutoDraw === 'function') {
+        thisComponent.setAutoDraw(false);
+      }
+    }
+    psychoJS.experiment.addData('condicion_PC.stopped', globalClock.getTime());
+    // the Routine "condicion_PC" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
     // Routines running outside a loop should always advance the datafile row
